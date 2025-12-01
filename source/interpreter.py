@@ -36,17 +36,17 @@ Tu dois répondre STRICTEMENT en JSON avec ce format :
     "input": "<argument string ou liste>"
 }}
 
-Aucune explication. Aucun texte supplémentaire.
+Aucune explication. Aucun texte supplémentaire. Pas de caractères comme `"'. 
 Seulement le JSON.
 """
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}]
     ).choices[0].message.content.strip()
-    
+
     try:
         parsed = json.loads(response)
     except:
-        raise ValueError(f"Réponse invalide du LLM :\n {response}\nFormat attendue : JSON")
+        raise ValueError(f"Format renvoyé par le LLM incorrect (Format attendu : JSON) {response}")
 
-    return parsed["tools"], parsed["input"]
+    return parsed["tool"], parsed["input"]

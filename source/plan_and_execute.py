@@ -15,6 +15,8 @@ class bcolors:
 
 def plan_and_execute(task: str):
 
+    if task == "break":
+        return
     plan = generate_plan(task)
     context = ""
 

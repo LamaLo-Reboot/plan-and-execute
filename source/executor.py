@@ -6,23 +6,23 @@ from retriever import retrieve_context
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-
 def list_files(path: str):
 
+    full_path = os.getcwd() + os.sep + "data" + os.sep + "docs_corpus" + os.sep
     result = []
-
-    for root, dirs, files in os.walk(path):
+    for root, dirs, files in os.walk(full_path):
         for f in files:
             result.append(os.path.join(root, f))
 
     return result
     
 def read_file(path: str):
+
     try:
         with open(path, "r", encoding="utf-8") as f:
-            return f.read
-    except:
-        return ""
+            return f.read()
+    except Exception as e:
+        return f"Erreur lors de l'execution de read : {e}"        
 
 def search_rag(query: str):
 

@@ -50,10 +50,14 @@ def retrieve_context(query, k=8, min_relevance=0.7):
             seen.add(src)
             unique.append((doc, meta, dist))
 
-    unique = sorted(unique, key=lambda x: x[2])
-    unique = unique[:k]
 
-    return [
-        {"content": doc, "metadata": meta, "distance": dist}
-        for doc, meta, dist in unique
-    ]
+    blocks = []
+    for doc, meta, dist in unique[:k]:
+        src = meta.get("source", "inconnu")
+        block = f"""[Source: {src} | Score: {dist:.3f}] {doc}"""
+        blocks.append(block)
+
+    if blocks:
+        return "\n".join(blocks)
+    else:
+        return "Aucun résultat pertinent."

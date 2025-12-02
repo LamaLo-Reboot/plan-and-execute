@@ -3,7 +3,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from executor import execute_step
 from plan import generate_plan
-from interpreter import interpret_steps
+from interpreter import interpret_step
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -16,18 +16,17 @@ class bcolors:
 def plan_and_execute(task: str):
 
     plan = generate_plan(task)
-
     context = ""
 
     for i, step in enumerate(plan, 1):
-        print(f"\n=== ÉTAPE {i} : {step} ===")
-        tool_name, tool_input = interpret_steps(step, context)
-        print(f"→ Tool choisi : {tool_name}")
-        print(f"→ Input        : {tool_input}")
+        print(f"\n---- STEP {i} : {step} ---")
+        tool_name, tool_input = interpret_step(step, context)
+        print(f"-> Tool choisi : {tool_name}")
+        print(f"-> Input : {tool_input}")
 
         result = execute_step(tool_name, tool_input)
 
-        print("→ Résultat de l'exécution :")
+        print("-> Résultat de l'exécution :")
         print(result[:500] + "\n...") if len(str(result)) > 500 else print(result)
 
         context += f"""
@@ -64,6 +63,6 @@ RÉPONSE :
     return response 
 
 if __name__ == "__main__":
-    task = input(f"{bcolors.OKGREEN}Entrez une tâche complexe >>{bcolors.WHITE} ")
+    task = input(f"{bcolors.OKGREEN}Entrez une tâche >>{bcolors.WHITE} ")
     result = plan_and_execute(task)
     print(f"{bcolors.OKGREEN}Résultats >>{bcolors.WHITE}\n{result}")

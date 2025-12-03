@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-chroma_client = chromadb.PersistentClient(path="../data/vector_db")
+chroma_client = chromadb.PersistentClient(path="data/vector_db")
 collection = chroma_client.get_collection("corpus_collection")
 embedding_cache = {}
 
